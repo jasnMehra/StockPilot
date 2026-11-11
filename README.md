@@ -1,7 +1,6 @@
 # StockPilot — Inventory Management System
 
-StockPilot is a small, locally hosted inventory management web application built with Python, Flask and SQLite. It is designed as an independent portfolio project and runs on Windows.
-
+StockPilot helps small shops and individuals track inventory without spreadsheets. Add products, record stock in and out, get low-stock alerts, and export your data to CSV. It runs locally on Windows with Python, Flask and SQLite, and needs no database server.
 
 ## Features
 
