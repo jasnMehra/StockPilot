@@ -1,0 +1,8 @@
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+stockpilot.db
+.env
+tests/__pycache__/

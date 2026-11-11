@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Overview{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">OVERVIEW</div><h1>Good to see you.</h1><p>Here's what's happening with your inventory today.</p></div><a class="btn primary" href="{{ url_for('add_product') }}">＋ Add product</a></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total products</span><span class="stat-icon purple">▤</span></div><div class="stat-value">{{ stats.products }}</div><div class="stat-note">Unique items in catalog</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Units in stock</span><span class="stat-icon blue">▦</span></div><div class="stat-value">{{ "{:,}".format(stats.units) }}</div><div class="stat-note">Across all products</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Inventory value</span><span class="stat-icon green">$</span></div><div class="stat-value">{{ stats.stock_value|money }}</div><div class="stat-note">Based on unit purchase price</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Low stock items</span><span class="stat-icon orange">!</span></div><div class="stat-value">{{ stats.low_stock }}</div><div class="stat-note">At or below minimum threshold</div></div>
+</div>
+<div class="content-grid">
+  <section class="panel"><div class="panel-heading"><div><h2>Inventory snapshot</h2><p>Products that may need your attention</p></div><a class="text-link" href="{{ url_for('products') }}">View all →</a></div>
+    {% if products %}<div class="table-wrap"><table><thead><tr><th>PRODUCT</th><th>SKU</th><th>QUANTITY</th><th>UNIT PRICE</th><th>STATUS</th></tr></thead><tbody>
+    {% for p in products %}<tr><td><div class="product-cell"><div class="product-icon">{{ p.name[:1]|upper }}</div><strong>{{ p.name }}</strong></div></td><td class="muted">{{ p.sku }}</td><td><strong>{{ p.quantity }}</strong></td><td>{{ p.price|money }}</td><td>{% if p.quantity <= p.low_stock_threshold %}<span class="pill warning">Low stock</span>{% else %}<span class="pill good">In stock</span>{% endif %}</td></tr>{% endfor %}
+    </tbody></table></div>{% else %}<div class="empty-state"><div class="empty-icon">▤</div><h3>Your inventory starts here</h3><p>Add your first product to see stock levels and value.</p><a class="btn primary" href="{{ url_for('add_product') }}">Add your first product</a></div>{% endif %}
+  </section>
+  <section class="panel activity-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Latest stock movements</p></div><a class="text-link" href="{{ url_for('transactions') }}">All activity →</a></div>
+    {% if movements %}<div class="activity-list">{% for m in movements %}<div class="activity-item"><div class="movement-icon {{ 'in' if m.movement_type == 'IN' else 'out' }}">{{ '↓' if m.movement_type == 'IN' else '↑' }}</div><div class="activity-copy"><strong>{{ m.product_name }}</strong><span>{{ m.note or ('Stock ' + m.movement_type|lower) }}</span><small>{{ m.created_at }}</small></div><strong class="{{ 'positive' if m.movement_type == 'IN' else 'negative' }}">{{ '+' if m.movement_type == 'IN' else '−' }}{{ m.quantity }}</strong></div>{% endfor %}</div>{% else %}<div class="empty-activity">No stock movements yet.</div>{% endif %}
+  </section>
+</div>
+{% endblock %}

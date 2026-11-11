@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Manage stock{% endblock %}{% block crumb %}<a href="{{ url_for('products') }}">Inventory</a> / Stock movement{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">INVENTORY CONTROL</div><h1>Manage stock</h1><p>Record incoming stock or outgoing sales for {{ product.name }}.</p></div><a class="btn light" href="{{ url_for('products') }}">← Back</a></div>
+<div class="stock-summary"><div><span>PRODUCT</span><strong>{{ product.name }}</strong><small>{{ product.sku }} · {{ product.category }}</small></div><div><span>CURRENT QUANTITY</span><strong>{{ product.quantity }} units</strong><small>Low-stock threshold: {{ product.low_stock_threshold }}</small></div></div>
+<section class="panel form-panel narrow"><form method="post" class="form-grid">
+<label class="field full"><span>Movement type</span><select name="movement_type"><option value="IN">Stock in — add quantity</option><option value="OUT">Stock out — remove quantity</option></select></label>
+<label class="field full"><span>Quantity <b>*</b></span><input name="quantity" type="number" min="1" step="1" required placeholder="Enter units"></label>
+<label class="field full"><span>Note</span><input name="note" maxlength="200" placeholder="e.g. Supplier delivery or customer sale"></label>
+<div class="form-actions full"><a class="btn light" href="{{ url_for('products') }}">Cancel</a><button class="btn primary" type="submit">Record movement</button></div>
+</form></section>
+{% endblock %}
